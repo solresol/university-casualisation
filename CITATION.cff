@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it using the metadata below."
+title: "university-casualisation"
+doi: 10.5281/zenodo.18859301
+repository-code: "https://github.com/solresol/university-casualisation"
+authors:
+  - name: solresol
+    email: gregb@ifost.org.au

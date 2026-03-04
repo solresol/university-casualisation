@@ -1,6 +1,8 @@
 # university-casualisation
 Various charts and numbers on casualisation in universities
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18859301.svg)](https://doi.org/10.5281/zenodo.18859301)
+
 ## What this project is
 
 This repo collects institution-level Australian higher-education data on:
@@ -97,11 +99,9 @@ Planned site features:
 
 ## DOI / citation
 
-Goal: mint a DOI for this repo so it can be cited in papers. Likely approach:
+DOI: https://doi.org/10.5281/zenodo.18859301
 
-- Connect the GitHub repo to Zenodo and create a GitHub Release.
-- Zenodo archives the release and mints a DOI.
-- Add the DOI badge + “How to cite” text to this README once minted.
+GitHub also supports “Cite this repository” via `CITATION.cff`.
 
 ## Substack post
 
