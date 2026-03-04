@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>University Casualisation (AU) — interactive charts</title>
+    <meta
+      name="description"
+      content="Interactive charts exploring Australian university casualisation, QILT student experience, and profitability — with sourcing per value."
+    />
+    <link rel="stylesheet" href="assets/styles-v2.css" />
+    <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="container">
+        <div class="hero__top">
+          <div>
+            <h1>University casualisation (Australia)</h1>
+            <p class="lede">
+              Interactive charts linking <strong>casual staff share</strong>,
+              <strong>QILT student experience</strong>, and
+              <strong>profitability</strong> — with click-through sourcing for each number.
+            </p>
+          </div>
+          <div class="hero__actions">
+            <a class="btn" href="data/qilt_casual_profitability_sourced.csv" download>Download CSV</a>
+            <a
+              class="btn btn--ghost"
+              href="https://github.com/solresol/university-casualisation"
+              target="_blank"
+              rel="noreferrer"
+              >GitHub</a
+            >
+          </div>
+        </div>
+
+        <div class="callouts">
+          <div class="callout">
+            <div class="callout__title">What this is</div>
+            <div class="callout__body">
+              Institution-level, observational comparisons. Useful for pattern-spotting — not causal claims.
+            </div>
+          </div>
+          <div class="callout">
+            <div class="callout__title">Key caveat</div>
+            <div class="callout__body">
+              “Casualisation” here is <em>casual FTE share</em> (not headcount share), because headcount isn’t published in this release.
+            </div>
+          </div>
+          <div class="callout">
+            <div class="callout__title">Sourcing</div>
+            <div class="callout__body">Click any dot to see URLs and spreadsheet sheet/cell references.</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="grid">
+        <article class="card">
+          <div class="card__header">
+            <div>
+              <h2>Student experience</h2>
+              <p class="muted">
+                QILT/SES: ComparED “Had a positive overall experience” (undergraduates), pooled across two most recent SES years.
+              </p>
+            </div>
+            <div class="controls">
+              <label class="control">
+                Casual measure
+                <select id="qilt-x"></select>
+              </label>
+            </div>
+          </div>
+          <div id="chart-qilt" class="chart" aria-label="Student experience chart"></div>
+          <div id="qilt-stats" class="chart__stats"></div>
+        </article>
+
+        <article class="card">
+          <div class="card__header">
+            <div>
+              <h2>Profitability</h2>
+              <p class="muted">Finance tables for 2023. Net margin is derived as net operating result / total revenue.</p>
+            </div>
+            <div class="controls">
+              <label class="control">
+                Casual measure
+                <select id="profit-x"></select>
+              </label>
+              <label class="control">
+                Profit metric
+                <select id="profit-y"></select>
+              </label>
+            </div>
+          </div>
+          <div id="chart-profit" class="chart" aria-label="Profitability chart"></div>
+          <div id="profit-stats" class="chart__stats"></div>
+        </article>
+      </section>
+
+      <section class="card card--details">
+        <div class="card__header">
+          <div>
+            <h2>Institution details</h2>
+            <p class="muted">Click a point (or search) to see values and sourcing.</p>
+          </div>
+          <div class="controls">
+            <label class="control">
+              Find institution
+              <input id="inst-search" list="inst-list" placeholder="Type a name…" autocomplete="off" />
+              <datalist id="inst-list"></datalist>
+            </label>
+          </div>
+        </div>
+        <div id="details" class="details">
+          <div class="details__empty">No institution selected yet.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card__header">
+          <h2>Notes</h2>
+        </div>
+        <div class="card__body">
+          <ul class="notes">
+            <li><strong>Association only:</strong> these charts do not establish causal effects.</li>
+            <li>
+              <strong>Outlier trimming:</strong> charts restrict the x-axis to ≤25% and exclude points above that. This reduces leverage from extreme
+              outliers; excluded counts are shown under each chart.
+            </li>
+            <li>
+              <strong>p-values:</strong> the p-value shown is for the OLS slope (two-sided t-test, df = n − 2). A small p-value does not imply useful
+              predictive power; check R².
+            </li>
+            <li><strong>FTE vs headcount:</strong> staffing is measured as actual staff FTE, including casual FTE.</li>
+            <li><strong>Timing:</strong> staff and finance metrics are for 2023; ComparED pools SES years.</li>
+            <li><strong>Transparency:</strong> the CSV includes per-value sourcing columns (URLs, sheet/cell refs, and derivation notes).</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card__header">
+          <h2>Baselines (for context)</h2>
+        </div>
+        <div class="card__body">
+          <ul class="notes">
+            <li>
+              <strong>Australian economy overall (ABS, Aug 2025):</strong> 20.0% of employees without paid holiday/sick leave (ABS proxy for casual);
+              19.5% self-identified as casual.
+            </li>
+            <li>
+              <strong>Universities / higher ed providers (Dept staff series, 2023):</strong> casual staff were 14.4% of total staff FTE (Table A + B),
+              down from 15.3% in 2022 and 17.8% in 2019.
+            </li>
+            <li>
+              <strong>Within universities (2023):</strong> teaching-only roles were 64.7% casual; Level A / below lecturer academic FTE were 53.5% casual.
+            </li>
+            <li>
+              <strong>Education &amp; training industry (ABS, Aug 2025):</strong> about 16.3% self-identified as casual (≈200.1k casual employees).
+            </li>
+          </ul>
+          <p class="muted">
+            These use different statistical definitions (employee counts vs FTE; proxy vs self-identified). Treat them as rough benchmarks, not
+            apples-to-apples.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <div>
+          <div class="footer__title">university-casualisation</div>
+          <div class="muted">
+            Data + code:
+            <a href="https://github.com/solresol/university-casualisation" target="_blank" rel="noreferrer">GitHub</a>. DOI to be minted via Zenodo.
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="assets/app-v10.js"></script>
+  </body>
+</html>

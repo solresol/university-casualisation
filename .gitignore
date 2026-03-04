@@ -205,3 +205,15 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Writing drafts (Substack)
+substack/
+substack*.md
+substack*.txt
+
+# Generated artefacts
+outputs/
+
+# This repo uses `site/` as source (override the mkdocs `/site` ignore above)
+!site/
+!site/**
